@@ -1,0 +1,29 @@
+extends layout
+
+block content
+
+  h1 Category: #{category.category_name}
+
+  if category_warranties.length 
+    p #[strong Delete the following warranties before attempting to delete this category.]
+    div(style='margin-left:20px;margin-top:20px')
+
+      h4 Categories
+
+      dl
+        each warranty in category_warranties
+          dt
+            a(href=warranty.url) #{warranty.first_name_owner} #{warranty.family_name_owner}
+          dd #{'Warranty valuation: '}: #{warranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}
+
+        else
+          p This category has no warranties
+  
+  else 
+    p Do you really want to delete this Category?
+    
+    form(method='POST' action='')
+      div.form-group
+        input#categoryid.form-control(type='hidden',name='categoryid', required='true', value=category._id )
+
+      button.btn.btn-primary(type='submit') Delete

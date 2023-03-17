@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  h1= title
+  form(method='POST' action='')
+    div.form-group
+      label(for='first_name') Firstname:
+      input#first_name.form-control(type='text', placeholder='Firstname of client' name='first_name' required='true' value=(undefined===business ? '' : business.first_name) )
+    div.form-group
+      label(for='last_name') Lastname:
+      input#last_name.form-control(type='text', placeholder='Lastname of client' name='last_name' required='true' value=(undefined===business ? '' : business.last_name) )
+    div.form-group
+      label(for='date_of_birth') Date of birth:
+      input#date_of_birth.form-control(type='date' name='date_of_birth' value=(undefined===business ? '' : business.date_of_birth) )
+    div.form-group
+      label(for='date_of_death') Date of death:
+      input#date_of_death.form-control(type='date' name='date_of_death' value=(undefined===business ? '' : business.date_of_death) )
+    div.form-group
+      label(for='country_of_investment') Country:
+      select#country_of_investment.form-control(type='select', placeholder='Select a country' name='country_of_investment' required='true' )
+        each country in countries
+          option(value=country._id) #{country.country_name}
+    div.form-group
+      label(for='amount_invested') Amount Invested:
+      input#amount_invested.form-control(type='number' placeholder='Amount of money invested' name='amount_invested' value=(undefined===business ? '' : business.amount_invested) )
+    div.form-group
+      label(for='warranty') Warranty:
+      select#warranty.form-control(type='select', placeholder='Select a warranty' name='warranty' required='true' )
+        each warranty in warranties
+          option(value=warranty._id) #{warranty.family_name_owner}, #{warranty.first_name_owner}: #{warranty.category}
+    div.form-group
+      label(for='interest_rate') Interest Rate:
+      input#interest_rate.form-control(type='number' placeholder='Interest Rate for the year. Do not use the "%" sign (i.e. 10, 11, 12, ...)' name='interest_rate' value=(undefined===business ? '' : business.interest_rate) )
+
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

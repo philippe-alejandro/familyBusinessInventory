@@ -1,0 +1,40 @@
+extends layout
+
+block content
+
+  h1 Country: #{country.country_name}
+
+  if country_businesses.length || country_warranties.length 
+    p #[strong Delete the following businesses / warranties before attempting to delete this country.]
+    div(style='margin-left:20px;margin-top:20px')
+
+      h4 Businesses
+
+      dl
+        each business in country_businesses
+          dt
+            a(href=business.url) #{business.first_name} #{business.family_name}:
+          dd #{business.amount_invested}
+
+        else
+          p No businesses in this country. 
+      
+      h4 Warranties
+
+      dl
+        each warranty in country_warranties
+          dt
+            a(href=warranty.url) #{warranty.first_name_owner} #{warranty.family_name_owner}:
+          dd #{warranty.category}: #{warranty.category}
+
+        else
+          p No warranties in this country. 
+  
+  else 
+    p Do you really want to delete this Country?
+    
+    form(method='POST' action='')
+      div.form-group
+        input#countryid.form-control(type='hidden',name='countryid', required='true', value=country._id )
+
+      button.btn.btn-primary(type='submit') Delete

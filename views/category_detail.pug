@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+  h1 Category: #{category.name}
+
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Warranties
+
+    dl
+      each warranty in category_warranties
+        dt
+          a(href=warranty.url) #{warranty.first_name_owner} #{warranty.family_name_owner}
+        dd Valuation: #{warranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+
+      else
+        p This category has no warranties
+  
+  hr
+  p
+    a(href=category.url+'/delete') Delete Category
+  p
+    a(href=category.url+'/update') Update Category

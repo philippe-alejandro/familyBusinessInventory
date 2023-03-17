@@ -1,0 +1,66 @@
+extends layout
+
+block content
+  h1= title
+  - console.log("hello: " + user._doc.accessLevel)
+  - console.log("User approver or not: " + user._doc.approver)
+  if user._doc && user._doc.approver 
+    ul
+      - if (user_list.length === 0 || user_list.every(user => user._doc.accessLevel !== "user"))
+        li There are no users pending approval.
+      - else
+        each user in user_list
+          - console.log(user._doc.accessLevel);
+          if user._doc.accessLevel === "user"
+            -console.log("user equals user");
+            div(class="user-info-container" style="border-radius: 10px; box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3); width: 20vw; padding: 3px; margin-bottom: 6px; padding-top: 6px; padding-bottom: 6px;")
+              ul
+                li
+                  strong Username:
+                  span= ` ${user.username}`
+                li
+                  strong Email:
+                  span= ` ${user.email}`
+                 
+                button.btn.btn-primary(type='button' onclick=`editUser('${user._id}')`) Approve
+  else 
+    li You don't have permission to grant user access.
+
+  script.
+    function editUser(userId) {
+      fetch(`/catalog/users/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ accessLevel: 'admin' })
+      })
+      .then(response => {
+        if (response.ok) {
+          // Get the li element that contains the button
+          const liElement = document.querySelector(`button[onclick="editUser('${userId}')"]`).parentNode;
+
+          // Get the username and email from the li element
+          const [username, email] = liElement.textContent.trim().split(',');
+
+          // Send a request to update the accessLevel property of the document
+          fetch(`/catalog/users/${userId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accessLevel: 'admin' })
+          })
+          .then(response => {
+            if (response.ok) {
+              // Update the li element with the new access level
+              liElement.textContent = `${username}, ${email}, access level: admin`;
+            }
+          })
+          .catch(error => {
+            console.error('Failed to update the user:', error);
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Failed to edit the user:', error);
+      });
+    }

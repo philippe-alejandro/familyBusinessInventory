@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each business in business_list
+      li
+        a(href=business.url) #{business.first_name} #{business.family_name}
+        ul
+          li= 'Amount invested with client: ' + business.amount_invested.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+          li= 'Value of warranty given: ' + business.warranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+    else
+      li There are no businesses.
+      

@@ -1,0 +1,30 @@
+extends layout
+
+block content
+
+  h1=title
+
+  div(style='margin-left:20px;margin-top:20px')
+ 
+    h4 Businesses in #{country.country_name}
+
+    dl
+      each business in country_businesses
+
+        dt
+          - const warranty = warranties.find(function(obj) { return obj['_id'].toString() === business['warranty'].toString();});
+          - const category = categories.find(function(obj) { return obj['_id'].toString() === business['warranty']['category'].toString();});
+          a(href=business.url) #{business.first_name} #{business.family_name}
+          li= 'Value of the warranty: ' + business.warranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+          li= 'Amount of capital invested: ' + business.amount_invested.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+          li= 'Interest given to client: ' + business.interest_rate + '%'
+          li= 'Type of warranty: ' + category.category_name
+
+      else
+        p There are no businesses related to this country. 
+  
+  hr
+  p
+    a(href=country.url+'/delete') Delete Country
+  p
+    a(href=country.url+'/update') Update Country

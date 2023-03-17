@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1 #{title}: #{warranty.first_name_owner} #{warranty.family_name_owner}
+  - const category = categories.find(function(obj) { return obj['_id'].toString() === warranty['category'].toString();});
+  p #[strong Category:] #{category.category_name}
+  p #[strong Valuation:] #{warranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD'})}
+  if warranty_Businesses.length
+    p #[strong Delete the following businesses before attempting to delete this warranty.]
+
+    div(style='margin-left:20px;margin-top:20px')
+
+      h4 Businesses related to this warranty:
+      dl
+      each warrantyBusiness in warranty_Businesses
+        p= Object.values(warranty_Businesses)[0].warranty.valuation
+        dt
+          if warrantyBusiness.value_warranty || warrantyBusiness.amount_invested
+            a(href=warrantyBusiness.url) #{warrantyBusiness.first_name} #{warrantyBusiness.family_name}
+            li= 'Amount of money invested: ' + warrantyBusiness.amount_invested.toLocaleString('en-US', { style: 'currency', currency: 'USD'})
+            - const searchedWarranty = warranties.find(function(obj) { return obj['_id'].toString() === warrantyBusiness['warranty'].toString();});
+            li= 'Value of warranty: ' + searchedWarranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD'})
+
+            
+
+  else
+    p Do you really want to delete this Warranty?
+
+    form(method='POST' action='')
+      div.form-group
+        input#warrantyid.form-control(type='hidden',name='warrantyid', required='true', value=warranty._id )
+
+      button.btn.btn-primary(type='submit') Delete

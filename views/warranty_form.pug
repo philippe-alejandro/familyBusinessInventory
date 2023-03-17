@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1= title
+  form(method='POST', action='')
+    div.form-group
+      label(for='first_name_owner') First Name:
+      input#first_name_owner.form-control(type='text', placeholder="Firstname of warranty's owner", name='first_name_owner', required='true', value=(undefined===warranty ? '' : warranty.first_name_owner))
+    div.form-group
+      label(for='family_name_owner') Family Name:
+      input#family_name_owner.form-control(type='text', placeholder="Family Name of warranty's owner", name='family_name_owner', required='true', value=(undefined===warranty ? '' : warranty.family_name_owner))
+    div.form-group
+      label(for='country') Country:
+      select#country.form-control(type='select', placeholder='Select a country' name='country' required='true' )
+        each country in countries
+          option(value=country._id) #{country.country_name}
+    div.form-group
+      label(for='category') Category:
+      select#category.form-control(type='select', placeholder='Select a category' name='category' required='true' )
+        each category in categories
+          option(value=category._id) #{category.category_name}
+    div.form-group
+      label(for='valuation') Valuation:
+      input#valuation.form-control(type='text', placeholder="warranty's valuation", name='valuation', value=(undefined===warranty ? '' : warranty.valuation) required='true')
+    button.btn.btn-primary(type='submit') Submit
+
+  hr
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

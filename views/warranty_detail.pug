@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  
+  h1 Warranty: #{warranty.first_name_owner} #{warranty.family_name_owner}
+  - const category = categories.find(function(obj) { return obj['_id'].toString() === warranty['category'].toString();});
+  - const theBusiness = allBusinesses.find(function(obj) { return obj['warranty']?.toString() === warranty['_id']?.toString();});
+  li= category.category_name + ': ' + warranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD'})
+ 
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Businesses related to this warranty:
+
+    dl
+      each business in warranty_businesses
+        dt
+          a(href=business.url) #{business.title}
+          - const country = countries.find(function(obj) { return obj['_id'].toString() === business['country_of_investment'].toString();});
+          li= 'Amount of money invested: ' + theBusiness.amount_invested.toLocaleString('en-US', { style: 'currency', currency: 'USD'})
+          li= 'Country where the business was made: ' + country.country_name
+
+      else
+        p There're no businesses related to this warranty.
+  
+  hr
+  p
+    a(href=warranty.url+'/delete') Delete warranty
+  p
+    a(href=warranty.url+'/update') Update warranty

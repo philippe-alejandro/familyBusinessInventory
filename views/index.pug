@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #[em the Brenner's Family Business Inventory], a very basic Express website developed as a tutorial example on the Mozilla Developer Network.
+
+  h1 Main Metrics
+
+  if error
+    p Error getting dynamic content.
+  else
+    p The inventory has the following business metrics:
+
+    ul
+      li #[strong Business Count:] !{data.business_count}
+      li #[strong Warranty Count:] !{data.warranty_count}
+      li #[strong Country Count:] !{data.country_count}
+      li #[strong Category Count:] !{data.category_count}
+      li #[strong Business Count By Country:]
+        - const businessPerCountry = data.business_count_by_country
+        - const allCountries = Object.values(data.allCountries)
+        ul 
+          each item in businessPerCountry
+            - const country = allCountries.find(function(obj) { return obj['_id'].toString() === item['_id'].toString();});
+            li= country.country_name + ': ' + item.total  
+      li #[strong Capital Allocation By Country:] 
+        - const capitalAllocationByCountry = data.capital_allocation_by_country
+        - const allCountries1 = Object.values(data.allCountries)
+        ul 
+          each item in capitalAllocationByCountry
+            - const country1 = allCountries1.find(function(obj) { return obj['_id'].toString() === item['_id'].toString();});
+            li= country1.country_name + ': ' + item.total.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+      li #[strong Warranty Valuation By Country:] 
+        - const warrantyValuationByCountry = data.warranty_valuation_by_country
+        - const allCountries2 = Object.values(data.allCountries)
+        ul 
+          each item in warrantyValuationByCountry 
+            - const country2 = allCountries2.find(function(obj) { return obj['_id'].toString() === item['_id'].toString();});
+            li= country2.country_name + ': ' + item.total.toLocaleString('en-US', { style: 'currency', currency: 'USD' })

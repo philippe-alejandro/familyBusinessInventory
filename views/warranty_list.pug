@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  dl    
+    each warranty in warranty_list
+      dt
+        - const category = categories.find(function(obj) { return obj['_id'].toString() === warranty['category'].toString();}); 
+        a(href=warranty.url) #{warranty.first_name_owner} #{warranty.family_name_owner}
+        li= 'Category of warranty: ' + category.category_name
+        li= 'Warranty valuation: ' + warranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+
+    else
+      li There are no warranties.

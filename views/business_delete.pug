@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 #{title}: #{business._id}
+  p #[strong Client Firstname:] #{business.first_name}
+  p #[strong Client Lastname:] #{business.family_name}
+  p #[strong Warranty Value:] #{business.value_warranty}
+  p #[strong Amount Invested:] #{business.amount_invested}
+  p #[strong Interest Rate:] #{business.interest_rate}
+
+  p #[strong Do you really want to delete this Business? ]
+
+  form(method='POST' action='')
+    div.form-group
+      input#businessId.form-control(type='hidden',name='businessId', required='true', value=business._id )
+
+    button.btn.btn-primary(type='submit') Delete

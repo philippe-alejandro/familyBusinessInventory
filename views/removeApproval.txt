@@ -1,0 +1,50 @@
+extends layout
+
+block content
+  h1= title
+  if user._doc && user._doc.approver && user._doc._id.toString() === '63ee438a16dafa473dd9b93f'
+    if user_list.length  
+      each user1 in user_list
+        - console.log(user1);
+        li 
+          div
+            | #{user1.username}, #{user1.email} 
+            - console.log("user1._doc.approver :" + user1._doc.approver);
+            span(class=`approver-status-${user1._id}`)= user1._doc.approver ? user1._doc.approver : user1._doc.approver
+          button.btn.btn-primary(type='button', class=`grant-btn-${user1._id}`, onclick=`editUser('${user1._id}')`, data-approver=`${user1.approver}`) Change Status
+
+  else 
+    li There are no users to grant access power to.
+
+  script.
+    function editUser(userId) {
+      fetch(`/catalog/approvalPower/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ approver: true })
+      })
+      .then(response => {
+        if (response.ok) {
+          // Get the button element that was clicked
+          const buttonElement = document.querySelector(`button[onclick="editUser('${userId}')"]`);
+
+          // Update the text content and status of the button
+          const approverStatusElement = document.querySelector(`.approver-status-${userId}`);
+          if (user1.approver) {
+            buttonElement.textContent = 'Change Status';
+            approverStatusElement.textContent = 'Granted';
+          } else {
+            buttonElement.textContent = 'Change Status';
+            approverStatusElement.textContent = 'Not granted';
+          }
+
+          // Update the onclick handler to disable the button
+          buttonElement.onclick = null;
+        }
+      })
+      .catch(error => {
+        console.error('Failed to edit the user:', error);
+      });
+    }

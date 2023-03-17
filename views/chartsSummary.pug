@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  - console.log(title)
+  div(id="chart-grid")
+    div(id="div-pie-chart-warranties")
+      h1 Value of Warranties Per Country
+      svg(id="pie-chart-warranties")
+    div(id="div-pie-chart-businesses")
+      h1 Value of Investment Per Client
+      svg(id="pie-chart-businesses")
+    div(id="div-pie-chart-categories")
+      svg(id="pie-chart-categories")
+
+  script(type="module" src="/javascripts/pieChartWarranties.js")
+  script(type="module" src="/javascripts/pieChartBusinesses.js")

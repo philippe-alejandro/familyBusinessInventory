@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1 Business Client: #{business.first_name} #{business.family_name}
+
+  p #[strong Client's date of birth:] #{business.date_of_birth}
+  p #[strong Client's date of death:] #{business.date_of_death ? business.date_of_death : 'N/A' }
+  p #[strong City of Investment:]  #{business.city_of_investment}
+  p #[strong Country of Investment:]  #{business.country_of_investment.country_name}
+  p #[strong Amount of Investment:] #{business.amount_invested.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+  p #[strong Value of Warranty:] #{business.warranty.valuation.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+  
+  hr
+  p
+    a(href=business.url+'/delete') Delete Business 
+  p
+    a(href=business.url+'/update') Update Business 
+

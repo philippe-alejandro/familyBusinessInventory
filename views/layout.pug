@@ -1,0 +1,64 @@
+doctype html
+html
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z", crossorigin="anonymous")
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js", integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj", crossorigin="anonymous")
+    script(src="https://d3js.org/d3.v3.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js", integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV", crossorigin="anonymous")
+    link(rel='stylesheet', href='/stylesheets/pieChartStyle.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    // script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
+  body
+    div(class='container-fluid')
+      div(class='row')
+        div(class='col-sm-2')
+          block sidebar
+            ul(class='sidebar-nav')
+              li
+                a(href='/catalog') Overall Business
+              li
+                a(href='/catalog/businesses') All businesses
+              li
+                a(href='/catalog/warranties') All warranties
+              li
+                a(href='/catalog/categories') All categories
+              li
+                a(href='/catalog/countries') All countries
+              li 
+                a(href='/catalog/charts') Summary in Charts 
+
+                hr
+                
+              li
+                a(href='/catalog/business/create') Create new business
+              li
+                a(href='/catalog/country/create') Create new country
+              li
+                a(href='/catalog/category/create') Create new category
+              li
+                a(href='/catalog/warranty/create') Create new warranty
+
+                hr
+        
+              li
+                a(href='/catalog/initialPage') Log Out  
+
+                hr
+
+              li
+                a(href='/catalog/pendingApproval') User Approval
+
+                hr
+                
+              li
+                a(href='/catalog/approvalPower') Grant Approval Power
+
+
+             
+        div(class='col-sm-10')
+          block content
+
+    //script(src="/javascripts/pieChart.js")

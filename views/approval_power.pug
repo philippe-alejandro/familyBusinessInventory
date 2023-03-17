@@ -1,0 +1,64 @@
+extends layout
+
+block content
+  h1= title
+  p(style="font-weight:bold;") After changing status refresh the page to see the changes reflected.
+  if user._doc && user._doc.approver && user._doc._id.toString() === '63ee438a16dafa473dd9b93f'
+    if user_list.length  
+      each user1 in user_list
+        - console.log(user1);
+        div(class="user-info-container" style="border-radius: 10px; box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3); width: 20vw; padding: 3px; margin-bottom: 6px;")
+          ul(style="max-height: 60vh; overflow-y: scroll;")
+            li
+              strong Username:
+              span= ` ${user1.username}`
+            li
+              strong Email:
+              span= ` ${user1.email}`
+            li
+              strong
+                span Has approver power:
+                span(class=`approver-status-${user1._id}`, style="font-weight:bold")= user1._doc.approver ? 'Granted' : 'Not granted'
+                button.btn.btn-primary(type='button', style='margin-top: 6px;', class=`grant-btn-${user1._id}`, onclick=`editUser('${user1._id}', '${user1._doc.approver}')`, data-approver=`${user1.approver}`) Change Status
+
+
+
+  else 
+    li There are no users to grant access power to.
+
+  script.
+    function editUser(userId) {
+      fetch(`/catalog/approvalPower/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ approver: true })
+      })
+      .then(response => {
+        if (response.ok) {
+          // Get the button element that was clicked
+          const buttonElement = document.querySelector(`button[onclick="editUser('${userId}')"]`);
+
+          // Update the text content and status of the button
+          const approverStatusElement = document.querySelector(`.approver-status-${userId}`);
+          if (buttonElement.getAttribute('data-approver') === 'true') {
+            buttonElement.textContent = 'Change Status';
+            approverStatusElement.textContent = 'Granted';
+          } else {
+            buttonElement.textContent = 'Change Status';
+            approverStatusElement.textContent = 'Not granted';
+          }
+
+          // Update the onclick handler to disable the button
+          buttonElement.onclick = null;
+        }
+      })
+      .catch(error => {
+        console.error('Failed to edit the user:', error);
+      });
+    }
+
+
+
+
